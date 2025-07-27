@@ -1,0 +1,10 @@
+# Core PDF processing - no ML dependencies
+PyMuPDF==1.23.14
+
+# Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+
+# Development
+black>=23.0.0
+flake8>=6.0.0

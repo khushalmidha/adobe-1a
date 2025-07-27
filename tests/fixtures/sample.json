@@ -1,0 +1,15 @@
+{
+  "title": "Sample Document Title",
+  "outline": [
+    {"level": "H1", "text": "Chapter 1: Introduction", "page": 0},
+    {"level": "H2", "text": "1.1 Background", "page": 1},
+    {"level": "H3", "text": "1.1.1 Historical Context", "page": 1},
+    {"level": "H2", "text": "1.2 Objectives", "page": 2},
+    {"level": "H1", "text": "Chapter 2: Methodology", "page": 3},
+    {"level": "H2", "text": "2.1 Data Collection", "page": 4},
+    {"level": "H3", "text": "2.1.1 Survey Design", "page": 4},
+    {"level": "H3", "text": "2.1.2 Sampling Strategy", "page": 5},
+    {"level": "H2", "text": "2.2 Analysis Framework", "page": 6},
+    {"level": "H1", "text": "Chapter 3: Results", "page": 7}
+  ]
+}
