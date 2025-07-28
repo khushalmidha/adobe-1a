@@ -4,6 +4,24 @@
 *.md
 !README.md
 
+# Test files (keep only for development)
+test_*
+*_test.py
+*_test.sh
+*_test.bat
+*.ps1
+fix_hierarchy.py
+analyze_hierarchy.py
+compare_accuracy.py
+detailed_comparison.py
+multilingual_test_report.md
+comprehensive_multilingual_test.py
+
+# Output files from development
+bajrang_baan_*.json
+*.log
+build.log
+
 # Python cache
 __pycache__
 *.pyc
@@ -21,12 +39,27 @@ nosetests.xml
 coverage.xml
 *.cover
 *.log
-.git
 
 # Virtual environments
 venv/
 env/
 ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker files (exclude test scripts)
+docker-compose.yml
+docker_health_check.sh
 
 # IDE files
 .vscode/

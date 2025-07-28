@@ -723,6 +723,10 @@ class PDFOutlineExtractor:
         if not spans:
             return []
         
+        # Special handling for religious documents
+        if doc_type == 'religious':
+            return self._extract_religious_headings(spans)
+        
         # Sort spans by page, then y-position, then x-position
         sorted_spans = sorted(spans, key=lambda x: (x.get("page", 0), x.get("y0", 0), x.get("x0", 0)))
         
@@ -1622,6 +1626,57 @@ class PDFOutlineExtractor:
         
         return result
     
+    def _extract_religious_headings(self, spans: List[Dict]) -> List[Dict]:
+        """
+        Extract headings from religious/devotional documents with proper hierarchy.
+        
+        Hierarchy for religious texts:
+        H1: Main title (e.g., "बजरंग बाण")
+        H2: Section markers (e.g., "॥ दोहा ॥", "॥ चौपाई ॥")
+        H3: Individual verses/prayers
+        """
+        if not spans:
+            return []
+        
+        headings = []
+        
+        # Sort spans by page and position
+        sorted_spans = sorted(spans, key=lambda x: (x.get("page", 0), x.get("y0", 0), x.get("x0", 0)))
+        
+        for span in sorted_spans:
+            text = span["text"].strip()
+            
+            # Skip very short text or empty
+            if len(text) < 3:
+                continue
+            
+            # Skip URLs and reference text
+            if text.startswith('http') or 'अन्य' in text:
+                level = 'H2'  # Reference/footer info
+            
+            # H1: Main title (usually first significant text)
+            elif any(title_word in text for title_word in ['बजरंग बाण', 'हनुमान चालीसा', 'आरती']):
+                level = 'H1'
+            
+            # H2: Section markers (text enclosed in ॥...॥)
+            elif text.startswith('॥') and text.endswith('॥'):
+                level = 'H2'
+            
+            # H3: All other verses/prayers (default for religious content)
+            else:
+                level = 'H3'
+            
+            # Add the heading with proper formatting
+            heading = {
+                'level': level,
+                'text': self._normalize_heading_text(text, 'religious'),
+                'page': span.get("page", 1)
+            }
+            
+            headings.append(heading)
+        
+        return headings
+    
     def _extract_invitation_headings(self, spans: List[Dict]) -> List[Dict]:
         """Extract headings for invitation documents - only main decorative text."""
         # Find the largest decorative text (like "HOPE To SEE You THERE!")
@@ -1710,8 +1765,17 @@ class PDFOutlineExtractor:
             'hope to see', 'rsvp', 'party', 'invitation', 'topjump'
         ])
         
+        # Check for religious/devotional document patterns
+        religious_indicators = [
+            'बजरंग', 'हनुमान', 'राम', 'सीता', '॥', 'दोहा', 'चौपाई', 
+            'भजन', 'आरती', 'मंत्र', 'श्लोक', 'स्तोत्र', 'प्रभु', 'जय'
+        ]
+        religious_count = sum(1 for indicator in religious_indicators if indicator in full_text)
+        
         if invitation_found:
             return 'invitation'
+        elif religious_count >= 3:  # If multiple religious indicators found
+            return 'religious'
         elif rfp_indicators >= 3:
             return 'rfp'
         elif form_indicators >= 3 and form_indicators > structured_indicators:
