@@ -47,7 +47,7 @@ def main():
             output_file = output_dir / f"{pdf_file.stem}.json"
             
             with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=4, ensure_ascii=False)
+                json.dump(result, f, indent=4, ensure_ascii=True)
             
             print(f"  -> Saved to {output_file}")
             
