@@ -96,7 +96,7 @@ adobe-1a/
 
 ### Installation
 ```bash
-git clone <repository-url>
+git clone https://github.com/khushalmidha/adobe-1a
 cd adobe-1a
 pip install -r requirements.txt
 pip install -e .
