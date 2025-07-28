@@ -1,53 +1,163 @@
-# PDF Outline Extractor
+# PDF Outline Extractor - Adobe Hackathon Round 1A
 
-A pure-Python library and CLI tool that extracts structured outlines from PDF documents, identifying titles and hierarchical headings (H1, H2, H3) with page numbers.
+A high-performance PDF outline extraction tool that extracts structured document outlines (Title, H1, H2, H3 headings) from PDF files. Built specifically for Adobe Hackathon Round 1A challenge requirements.
 
-## Problem Statement
+## Quick Start (Hackathon Submission)
 
-This tool addresses the need to automatically extract document structure from PDFs for content analysis, navigation, and indexing. It was developed as part of a hackathon challenge requiring robust, offline PDF processing with multilingual support.
+### Build and Run
+```bash
+# Build the Docker image
+docker build --platform linux/amd64 -t mysolutionname:somerandomidentifier .
+
+# Run the container (place PDFs in ./input directory)
+docker run --rm -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output --network none mysolutionname:somerandomidentifier
+```
+
+### Expected Results
+- Processes all PDF files from `./input/` directory
+- Generates `filename.json` for each `filename.pdf` 
+- Outputs saved to `./output/` directory
+- Completes within 10 seconds for 50-page PDFs
+- Works completely offline
+
+## Challenge Overview
+
+This solution addresses the "Connecting the Dots Through Docs" challenge by extracting structured outlines from PDF documents to enable smarter document experiences like semantic search, recommendation systems, and insight generation.
 
 ## Features
 
-- **Intelligent Heading Detection**: Uses font size ratios and layout analysis rather than simple bold/italic detection
-- **Multilingual Support**: Handles RTL scripts (Arabic, Hebrew), CJK languages, and Unicode normalization
-- **Edge Case Handling**: Processes tabs, newlines, diacritics, and unusual punctuation correctly
-- **Performance Optimized**: Processes 50-page PDFs in under 10 seconds
+- **Fast Processing**: Processes 50-page PDFs in under 10 seconds
+- **Hierarchical Extraction**: Identifies Title, H1, H2, and H3 headings with page numbers
+- **High Accuracy**: Uses font size ratios and layout analysis for precise heading detection
+- **Multilingual Support**: Handles various languages including RTL scripts and CJK characters
 - **Offline Operation**: No internet connectivity required
-- **CLI and Python API**: Both command-line and programmatic interfaces
+- **AMD64 Optimized**: Built specifically for linux/amd64 architecture
+- **Docker Ready**: Complete containerized solution
 
-## Installation
+## Output Format
 
-### From Source
+The tool generates JSON files in the exact format specified by the challenge:
+
+```json
+{
+  "title": "Understanding AI",
+  "outline": [
+    { "level": "H1", "text": "Introduction", "page": 1 },
+    { "level": "H2", "text": "What is AI?", "page": 2 },
+    { "level": "H3", "text": "History of AI", "page": 3 }
+  ]
+}
+```
+
+## Docker Usage (Hackathon Submission)
+
+### Building the Container
+
 ```bash
-git clone https://github.com/youruser/pdf_outline_extractor.git
-cd pdf_outline_extractor
+docker build --platform linux/amd64 -t mysolutionname:somerandomidentifier .
+```
+
+### Running the Container
+
+```bash
+docker run --rm -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output --network none mysolutionname:somerandomidentifier
+```
+
+### Expected Behavior
+
+- The container automatically processes all PDF files from `/app/input` directory
+- For each `filename.pdf`, it generates a corresponding `filename.json` in `/app/output`
+- Runs completely offline with no network access
+- Completes processing within the 10-second time limit for 50-page PDFs
+- For each `filename.pdf`, it generates a corresponding `filename.json` in `/app/output`
+- Runs completely offline with no network access
+- Completes processing within the 10-second time limit for 50-page PDFs
+
+## Technical Specifications
+
+### Performance Requirements ✅
+- **Execution Time**: ≤ 10 seconds for 50-page PDF
+- **Model Size**: ≤ 200MB (no ML models used, pure rule-based)
+- **Architecture**: AMD64 (x86_64) compatible
+- **Network**: Fully offline operation
+- **Resource Usage**: Optimized for 8 CPU / 16GB RAM systems
+
+### Architecture
+
+- **Pure Python Implementation**: No ML dependencies
+- **PyMuPDF**: Fast PDF processing and text extraction
+- **Font Analysis**: Size-ratio based heading detection
+- **Layout Analysis**: Position-based hierarchy determination
+- **Unicode Support**: Proper handling of multilingual content
+
+## Local Development
+
+### Prerequisites
+- Python 3.10+
+- pip
+
+### Installation
+```bash
+git clone <repository-url>
+cd adobe-1a
 pip install -r requirements.txt
 pip install -e .
 ```
 
-### From PyPI
+### Local Testing
 ```bash
-pip install pdf_outline_extractor
+# Create test directories
+mkdir -p input output
+
+# Place your PDF files in the input directory
+cp your_file.pdf input/
+
+# Run the extractor
+python main.py
+
+# Check results in output/
+ls output/
 ```
 
-## Usage
+## Project Structure
 
-### Command Line Interface
-
-#### Extract Outlines
-```bash
-pdf_outline_extractor --input-dir /app/input --output-dir /app/output
+```
+adobe-1a/
+├── Dockerfile                          # AMD64 optimized container
+├── main.py                            # Entry point for Docker container
+├── requirements.txt                   # Minimal dependencies
+├── setup.py                          # Package configuration
+├── pyproject.toml                     # Modern Python packaging
+├── README.md                          # This file
+└── src/
+    └── pdf_outline_extractor/
+        ├── __init__.py
+        ├── extractor_new.py          # Core extraction logic
+        ├── json_writer_new.py        # JSON output formatting
+        ├── layout_utils_new.py       # Layout analysis utilities
+        ├── cli_hackathon.py          # CLI interface
+        └── cli_simple.py             # Simplified CLI
 ```
 
-#### Compare Results
-```bash
-pdf_outline_extractor cmp --pred /app/output --gold /app/expected
-```
+## Algorithm Overview
 
-#### CLI Options
-- `--input-dir`: Directory containing input PDF files
-- `--output-dir`: Directory for output JSON files
-- `--min-h1-size-ratio`: Minimum font size ratio for H1 detection (default: 1.5)
+1. **Text Extraction**: Uses PyMuPDF to extract text with font metadata
+2. **Font Analysis**: Calculates font size distributions and ratios
+3. **Heading Detection**: Identifies headings based on size ratios and layout
+4. **Hierarchy Assignment**: Assigns H1/H2/H3 levels based on size and position
+5. **Title Extraction**: Identifies document title from first page content
+6. **JSON Generation**: Formats output according to challenge specifications
+
+## Scoring Criteria Alignment
+
+- **Heading Detection Accuracy**: Advanced font analysis and layout heuristics
+- **Performance**: Optimized for speed with minimal dependencies
+- **Size Compliance**: No ML models, pure Python implementation
+- **Network Independence**: Completely offline operation
+
+## License
+
+This project is developed for the Adobe Hackathon Round 1A challenge.
 - `--h2-indent-threshold`: X-coordinate threshold for H2/H3 distinction (default: 50)
 - `--lang-model-path`: Path to language detection model
 - `--verbose`: Enable detailed logging
