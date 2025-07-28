@@ -33,7 +33,7 @@ ENV PYTHONPATH="/app/src:$PYTHONPATH"
 ENV PYTHONUNBUFFERED=1
 
 # Default command - process PDFs from /app/input to /app/output
-CMD ["python", "-m", "pdf_outline_extractor.cli_clean"]
+CMD ["python", "-m", "pdf_outline_extractor.cli_hackathon"]
 
 # Labels for metadata
 LABEL maintainer="Adobe Hackathon Team <team@example.com>"
