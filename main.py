@@ -12,7 +12,6 @@ from typing import List, Dict, Any
 
 # Import the PDF outline extractor
 from src.pdf_outline_extractor.extractor_new import PDFOutlineExtractor
-from src.pdf_outline_extractor.json_writer_new import JSONWriter
 
 # Configure logging
 logging.basicConfig(
