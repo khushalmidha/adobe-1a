@@ -62,6 +62,47 @@ outline = extractor.extract_outline("document.pdf")
 print(outline)
 ```
 
+### Docker Usage
+
+#### Build the Docker Image
+```bash
+docker build -t pdf-extractor .
+```
+
+#### Run with Docker
+```bash
+# Create input and output directories
+mkdir -p input output
+
+# Copy your PDF files to the input directory
+cp *.pdf input/
+
+# Run the container
+docker run --rm \
+  -v "$(pwd)/input:/app/input" \
+  -v "$(pwd)/output:/app/output" \
+  pdf-extractor
+```
+
+#### Docker Test Script
+For automated testing, use the provided test scripts:
+
+**Linux/macOS:**
+```bash
+chmod +x test_docker.sh
+./test_docker.sh
+```
+
+**Windows:**
+```batch
+test_docker.bat
+```
+
+The Docker container expects:
+- Input PDFs in `/app/input` directory
+- Outputs JSON files to `/app/output` directory
+- Runs completely offline with no external dependencies
+
 ## Output Format
 
 The tool generates JSON files with the following structure (using 0-based page indexing):

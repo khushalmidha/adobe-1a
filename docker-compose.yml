@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  pdf-extractor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    image: pdf-extractor:latest
+    container_name: adobe-pdf-extractor
+    volumes:
+      - ./input:/app/input:ro
+      - ./output:/app/output:rw
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '1.0'
+    healthcheck:
+      test: ["CMD", "python", "-c", "import pdf_outline_extractor; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Development service with interactive shell
+  pdf-extractor-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    image: pdf-extractor:latest
+    container_name: adobe-pdf-extractor-dev
+    volumes:
+      - ./:/app:rw
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    profiles:
+      - dev
