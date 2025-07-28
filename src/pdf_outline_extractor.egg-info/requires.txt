@@ -1,0 +1,13 @@
+PyMuPDF>=1.23.14
+langdetect>=1.0.9
+numpy>=1.24.3
+regex>=2023.6.3
+click>=8.1.7
+unicodedata2>=15.0.0
+
+[dev]
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0

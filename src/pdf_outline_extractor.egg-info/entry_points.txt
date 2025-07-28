@@ -1,0 +1,2 @@
+[console_scripts]
+pdf_outline_extractor = pdf_outline_extractor.cli:main
