@@ -9,14 +9,7 @@ __author__ = "Adobe Hackathon Team"
 __email__ = "team@example.com"
 
 from .extractor_new import PDFOutlineExtractor
-from .json_writer_new import OutlineWriter
-from .layout_utils_new import LayoutAnalyzer
-from .i18n_utils_new import normalize_text, detect_language
 
 __all__ = [
     "PDFOutlineExtractor",
-    "OutlineWriter", 
-    "LayoutAnalyzer",
-    "normalize_text",
-    "detect_language",
 ]
