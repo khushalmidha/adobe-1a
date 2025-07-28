@@ -62,46 +62,38 @@ outline = extractor.extract_outline("document.pdf")
 print(outline)
 ```
 
-### Docker Usage
+## Docker Usage (For Adobe Hackathon Evaluation)
 
-#### Build the Docker Image
+**ONE SIMPLE COMMAND TO RUN:**
+
 ```bash
+# Build and run the Docker container
 docker build -t pdf-extractor .
-```
 
-#### Run with Docker
-```bash
-# Create input and output directories
+# Place your PDF files in 'input' directory and run:
 mkdir -p input output
-
-# Copy your PDF files to the input directory
-cp *.pdf input/
-
-# Run the container
-docker run --rm \
-  -v "$(pwd)/input:/app/input" \
-  -v "$(pwd)/output:/app/output" \
-  pdf-extractor
+docker run --rm -v "$(pwd)/input:/app/input" -v "$(pwd)/output:/app/output" pdf-extractor
 ```
 
-#### Docker Test Script
-For automated testing, use the provided test scripts:
+**That's it!** The container will:
+- Process all PDF files from the `input/` directory
+- Generate JSON outputs in the `output/` directory
+- Run completely offline with no external dependencies
 
-**Linux/macOS:**
-```bash
-chmod +x test_docker.sh
-./test_docker.sh
+### Expected Directory Structure:
+```
+├── Dockerfile          # ← This is what you run
+├── input/              # ← Put your PDF files here
+│   ├── file01.pdf
+│   ├── file02.pdf
+│   └── ...
+└── output/             # ← JSON results appear here
+    ├── file01.json
+    ├── file02.json
+    └── ...
 ```
 
-**Windows:**
-```batch
-test_docker.bat
-```
-
-The Docker container expects:
-- Input PDFs in `/app/input` directory
-- Outputs JSON files to `/app/output` directory
-- Runs completely offline with no external dependencies
+**That's it!** The container will process all PDF files from the `input/` directory and save JSON results to `output/`.
 
 ## Output Format
 
